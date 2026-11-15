@@ -1,0 +1,12 @@
+{
+  "name": "romantic-couple-portrait",
+  "version": "1.0.0",
+  "description": "Photorealistic Couple Portrait Animation & Living Romantic Environment",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["animation", "canvas", "romantic", "hearts", "portrait", "art"],
+  "author": "DevNs-cmd",
+  "license": "MIT"
+}
