@@ -90,12 +90,15 @@
     { fill: '#ffffff', stroke: '#f43f5e' }
   ];
 
-  // Resize Ambient Canvas
+  // Resize Ambient Canvas with Device Pixel Ratio Support
   function resizeAmbientCanvas() {
-    ambientCanvas.width = window.innerWidth;
-    ambientCanvas.height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    ambientCanvas.width = window.innerWidth * dpr;
+    ambientCanvas.height = window.innerHeight * dpr;
+    aCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   window.addEventListener('resize', resizeAmbientCanvas);
+  window.addEventListener('orientationchange', () => setTimeout(resizeAmbientCanvas, 150));
   resizeAmbientCanvas();
 
   // Initialize Fairy Lights
@@ -479,7 +482,7 @@
   // MAIN ANIMATION LOOP
   // =========================================================================
   function renderAmbient() {
-    aCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+    aCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     // 1. Draw Twinkling Fairy Lights
     fairyLights.forEach((fl) => {
@@ -497,8 +500,8 @@
         fh.y -= fh.vy;
         fh.phase += fh.swayFreq;
         if (fh.y < -40) {
-          fh.y = ambientCanvas.height + 40;
-          fh.x = Math.random() * ambientCanvas.width;
+          fh.y = window.innerHeight + 40;
+          fh.x = Math.random() * window.innerWidth;
         }
       }
       const curX = fh.x + fh.swayAmp * Math.sin(fh.phase);
@@ -528,7 +531,7 @@
       drawHeartPath(aCtx, bh.x, bh.y, bh.size, bh.angle);
       aCtx.restore();
 
-      if (bh.life <= 0 || bh.y > ambientCanvas.height + 50) {
+      if (bh.life <= 0 || bh.y > window.innerHeight + 50) {
         burstHearts.splice(i, 1);
       }
     }
